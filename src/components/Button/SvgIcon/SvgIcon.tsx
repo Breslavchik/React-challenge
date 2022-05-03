@@ -1,6 +1,7 @@
 import { Icon } from "./Icon";
 import { SvgDelete } from "./SvgDelete";
 import { SvgMinus } from "./SvgMinus";
+import { SvgPlus } from "./SvgPlus";
 
 export type SvgIconProps = {
   icon: Icon;
@@ -9,7 +10,7 @@ export type SvgIconProps = {
 export const SvgIcon = (props: SvgIconProps) => {
   switch (props.icon) {
     case Icon.Plus:
-      return <SvgMinus />;
+      return <SvgPlus />;
     case Icon.Minus:
       return <SvgMinus />;
     case Icon.Delete:
