@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Button } from "../Button/Button";
-import { DeleteButton } from "../Button/DeleteButton";
 import { Icon } from "../Button/SvgIcon/Icon";
-import { SvgIcon } from "../Button/SvgIcon/SvgIcon";
+import { ModalWindow } from "../ModalWindow/ModalWindow";
 import { Row, TableRow } from "./TableRow";
 
 export type TableProps = {
@@ -10,33 +9,36 @@ export type TableProps = {
   data: Row[];
 };
 
-
 export const Table = (props: TableProps) => {
   const [tableData, setTableData] = useState<Row[]>(props.data);
+  const [hidden, setHidden] = useState<boolean>(true);
+  const [idForDelete, setIdForDelete] = useState<number>(0);
+
+  const openModal = (id: number) => {
+    setHidden(false);
+    setIdForDelete(id);
+  };
 
   let findAmount = (array: Row[]) => {
-    let amount=array.reduce(function (sum, elem) {
+    let amount = array.reduce(function (sum, elem) {
       let result = elem.price * elem.sum;
       return sum + result;
     }, 0);
     return amount;
   };
-
   const [amount, setAmount] = useState<number>(findAmount(props.data));
 
-  const deleteItem = (elem: Row) => {
-    const newTableData = tableData.filter((item) => item != elem);
+  const deleteItem = (elem: number) => {
+    const newTableData = tableData.filter((item) => item.id != elem);
     setTableData(newTableData);
-    // let findAmount = newTableData.reduce(function (sum, elem) {
-    //   let result = elem.price * elem.sum;
-    //   return sum + result;
-    // }, 0);
-    setAmount(findAmount(newTableData));
+    let newAmount = findAmount(newTableData);
+    setAmount(newAmount);
+    setHidden(true);
   };
 
-  const findAmountAfterChange=()=>{
+  const findAmountAfterChange = () => {
     setAmount(findAmount(tableData));
-  }
+  };
 
   return (
     <>
@@ -54,14 +56,14 @@ export const Table = (props: TableProps) => {
         </thead>
         <tbody>
           {tableData.map((elem) => (
-            <tr>
+            <tr key={elem.id}>
               <td>{tableData.indexOf(elem) + 1}</td>
-              <TableRow data={elem} callback={findAmountAfterChange}/>
+              <TableRow data={elem} callback={findAmountAfterChange} />
               <td>
                 <Button
                   icon={Icon.Delete}
                   onClick={() => {
-                    deleteItem(elem);
+                    openModal(elem.id);
                   }}
                 />
               </td>
@@ -69,6 +71,13 @@ export const Table = (props: TableProps) => {
           ))}
         </tbody>
       </table>
+      <ModalWindow
+        hidden={hidden}
+        onClick={() => {
+          deleteItem(idForDelete);
+        }}
+        onClose={() => setHidden(true)}
+      />
       <h1> ИТОГО: {amount} р. </h1>
     </>
   );

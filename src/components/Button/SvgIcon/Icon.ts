@@ -1,5 +1,5 @@
 export const enum Icon {
-    Plus, 
+    Plus=1, 
     Minus,
     Delete
 }
