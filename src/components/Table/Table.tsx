@@ -3,6 +3,7 @@ import { Button } from "../Button/Button";
 import { Icon } from "../Button/SvgIcon/Icon";
 import { ModalWindow } from "../ModalWindow/ModalWindow";
 import { Row, TableRow } from "./TableRow";
+import './Table.scss';
 
 export type TableProps = {
   name: string;
@@ -42,7 +43,7 @@ export const Table = (props: TableProps) => {
 
   return (
     <>
-      <table>
+      <table className="table">
         <caption>{props.name}</caption>
         <thead>
           <tr>
@@ -59,8 +60,7 @@ export const Table = (props: TableProps) => {
             <tr key={elem.id}>
               <td>{tableData.indexOf(elem) + 1}</td>
               <TableRow data={elem} callback={findAmountAfterChange} />
-              <td>
-                <Button
+              <td><Button
                   icon={Icon.Delete}
                   onClick={() => {
                     openModal(elem.id);
@@ -78,7 +78,7 @@ export const Table = (props: TableProps) => {
         }}
         onClose={() => setHidden(true)}
       />
-      <h1> ИТОГО: {amount} р. </h1>
+      <h1 className="table-footer"> ИТОГО: {amount} р. </h1>
     </>
   );
 };

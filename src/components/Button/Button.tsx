@@ -1,5 +1,6 @@
 import { Icon } from "./SvgIcon/Icon";
 import { SvgIcon } from "./SvgIcon/SvgIcon";
+import './Button.scss';
 
 export type ButtonProps = {
   icon?: Icon;

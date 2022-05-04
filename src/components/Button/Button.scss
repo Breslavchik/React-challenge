@@ -1,0 +1,22 @@
+button {
+    font-family: inherit;
+    font-weight: bold;
+    font-style: italic;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+        margin: 10px;
+        padding: 15px 20px;
+
+        
+    &:hover,
+    &:active{
+        border: 1px solid black
+    }
+
+    &:disabled {
+        cursor: auto;
+        border: 0;
+
+    }
+}

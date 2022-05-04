@@ -49,8 +49,6 @@ export const TableRow = (props: TableRowProps) => {
             plusItem(props);
           }}
         />
-      </td>
-      <td>
         <Button
           icon={Icon.Minus}
           onClick={() => {

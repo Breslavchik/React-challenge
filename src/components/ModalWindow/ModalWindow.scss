@@ -1,0 +1,35 @@
+.modal-window {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        min-height: 250px;
+        min-width: 400px;
+        z-index: 1;
+        border: 2px solid #3b2a9c;
+        border-radius: 5px;
+        background-color: #bfaddb;
+        display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+    button {
+        width: 83px;
+    } 
+}
+
+.modal-conteiner {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.text {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    p {
+        padding-bottom: 10px;
+    }
+}
