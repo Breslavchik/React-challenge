@@ -1,14 +1,14 @@
 .table {
 	width: 100%;
 	border: none;
-	margin-bottom: 0 auto 20px auto;
+	margin: 0 auto 20px auto;
 	border-collapse: separate;
 
    caption {
        text-align: left;
-       font-size: 20px;
+       font-size: 26px;
        font-weight: bold;
-       padding: 22px;
+       padding: 28px;
    } 
 }
 .table-footer {
@@ -21,7 +21,7 @@
 	border: none;
 	padding: 10px 15px;
 	background: #EDEDED;
-	font-size: 20px;
+	font-size: 26px;
 	border-top: 1px solid #6A48D7;
 }
 
@@ -47,7 +47,7 @@ tr:hover td {
 	text-align: left;
 	border: none;
 	padding: 10px 15px;
-	font-size: 18px;
+	font-size: 24px;
 	vertical-align: center;
 }
 

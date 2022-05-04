@@ -4,38 +4,46 @@ import { Table } from "./components/Table/Table";
 
 const productList = [
   {
-    text: "Букварь",
-    price: 500,
+    text: "Письменный стол",
+    price: 5000,
     sum: 1,
     id: 1,
+  },
+  {
+    text: "Ворон",
+    price: 2000,
+    sum: 1,
+    id: 2,
   },
   {
     text: "Бубен",
     price: 1500,
     sum: 12,
-    id: 2,
+    id: 3,
   },
   {
     text: "Мартовский заяц",
     price: 1000,
     sum: 10,
-    id: 3,
+    id: 4,
   },
   {
     text: "Шляпа",
     price: 300,
     sum: 5,
-    id: 4,
+    id: 5,
   },
 ];
 
 function App() {
   return (
     <>
+    <body>
     <div className="common-conteiner">
       <Header />
       <Table name="Детали заказа одного безумца" data={productList} />
       </div>
+      </body>
     </>
   );
 }
