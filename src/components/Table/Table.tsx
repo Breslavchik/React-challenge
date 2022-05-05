@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../Button/Button";
 import { Icon } from "../Button/SvgIcon/Icon";
 import { ModalWindow } from "../ModalWindow/ModalWindow";
@@ -30,16 +30,15 @@ export const Table = (props: TableProps) => {
   const [amount, setAmount] = useState<number>(findAmount(props.data));
 
   const deleteItem = (elem: number) => {
-    const newTableData = tableData.filter((item) => item.id != elem);
+    const newTableData = tableData.filter((item) => item.id !== elem);
     setTableData(newTableData);
-    let newAmount = findAmount(newTableData);
-    setAmount(newAmount);
     setHidden(true);
   };
 
-  const findAmountAfterChange = () => {
+
+  useEffect(()=>{
     setAmount(findAmount(tableData));
-  };
+  }, [tableData, amount]);
 
   return (
     <>
@@ -59,7 +58,7 @@ export const Table = (props: TableProps) => {
           {tableData.map((elem) => (
             <tr key={elem.id}>
               <td>{tableData.indexOf(elem) + 1}</td>
-              <TableRow data={elem} callback={findAmountAfterChange} />
+              <TableRow data={elem} callback={()=>{ setAmount(findAmount(tableData))}} />
               <td><Button
                   icon={Icon.Delete}
                   onClick={() => {

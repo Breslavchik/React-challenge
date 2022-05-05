@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "../Button/Button";
 import { Icon } from "../Button/SvgIcon/Icon";
-import { ModalWindow } from "../ModalWindow/ModalWindow";
 
 export type TableRowProps = {
   data: Row;
@@ -16,26 +15,20 @@ export type Row = {
 };
 
 export const TableRow = (props: TableRowProps) => {
-  let disabled: boolean = props.data.sum === 1;
-  const [isDisabled, setIsDisabled] = useState<boolean>(disabled);
+  const [isDisabled, setIsDisabled] = useState<boolean>((props.data.sum === 1));
   const [sum, setSum] = useState<number>(props.data.sum);
 
   const plusItem = (props: any) => {
-    let newSum = sum + 1;
-    setSum(newSum);
-    props.data.sum = newSum;
+    props.data.sum = sum + 1;
+    setSum(props.data.sum);
+    setIsDisabled(props.data.sum === 1);
     props.callback?.(props);
-    disabled = props.data.sum === 1;
-    setIsDisabled(disabled);
   };
   const minusItem = (props: any) => {
-    let newSum = sum - 1;
-    setSum(newSum);
-    props.data.sum = newSum;
+    props.data.sum = sum - 1;
+    setSum(props.data.sum);
+    setIsDisabled(props.data.sum === 1);
     props.callback?.(props);
-    if (newSum === 1) {
-      setIsDisabled(true);
-    }
   };
   return (
     <>
