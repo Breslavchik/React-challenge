@@ -4,6 +4,11 @@ import { Icon } from "../Button/SvgIcon/Icon";
 import { ModalWindow } from "../ModalWindow/ModalWindow";
 import { Row, TableRow } from "./TableRow";
 import './Table.scss';
+import { findAmount } from "../../helpers.ts/math";
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "../../store/store";
+import { ListState } from "../../store/list.reducer";
+import { changeFinalCost, changeListItem } from "../../store/list.actions";
 
 export type TableProps = {
   name: string;
@@ -11,7 +16,11 @@ export type TableProps = {
 };
 
 export const Table = (props: TableProps) => {
-  const [tableData, setTableData] = useState<Row[]>(props.data);
+  const dispatch = useDispatch();
+
+  const { itemList, finalCost } = useSelector(
+    (state: AppState) => state.ListState as ListState
+  );
   const [hidden, setHidden] = useState<boolean>(true);
   const [idForDelete, setIdForDelete] = useState<number>(0);
 
@@ -20,25 +29,18 @@ export const Table = (props: TableProps) => {
     setIdForDelete(id);
   };
 
-  let findAmount = (array: Row[]) => {
-    let amount = array.reduce(function (sum, elem) {
-      let result = elem.price * elem.sum;
-      return sum + result;
-    }, 0);
-    return amount;
-  };
-  const [amount, setAmount] = useState<number>(findAmount(props.data));
+  // const [amount, setAmount] = useState<number>(findAmount(props.data));
 
   const deleteItem = (elem: number) => {
-    const newTableData = tableData.filter((item) => item.id !== elem);
-    setTableData(newTableData);
+    const newTableData = itemList?.filter((item) => item.id !== elem);
+    dispatch(changeListItem(newTableData!));
     setHidden(true);
   };
 
 
   useEffect(()=>{
-    setAmount(findAmount(tableData));
-  }, [tableData, amount]);
+    dispatch(changeFinalCost(findAmount(itemList!)));
+  }, [itemList, finalCost]);
 
   return (
     <>
@@ -55,10 +57,10 @@ export const Table = (props: TableProps) => {
           </tr>
         </thead>
         <tbody>
-          {tableData.map((elem) => (
+          {itemList?.map((elem) => (
             <tr key={elem.id}>
-              <td>{tableData.indexOf(elem) + 1}</td>
-              <TableRow data={elem} callback={()=>{ setAmount(findAmount(tableData))}} />
+              <td>{itemList.indexOf(elem) + 1}</td>
+              <TableRow data={elem} callback={()=>{ dispatch(changeFinalCost(findAmount(itemList)))}} />
               <td><Button
                   icon={Icon.Delete}
                   onClick={() => {
@@ -77,7 +79,7 @@ export const Table = (props: TableProps) => {
         }}
         onClose={() => setHidden(true)}
       />
-      <h1 className="table-footer"> ИТОГО: {amount} р. </h1>
+      <h1 className="table-footer"> ИТОГО: {finalCost} р. </h1>
     </>
   );
 };
