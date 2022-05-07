@@ -2,33 +2,39 @@ import { useState } from "react";
 import { Button } from "../Button/Button";
 import { Icon } from "../Button/SvgIcon/Icon";
 
-export type TableRowProps = {
-  data: Row;
+export type TableElementProps = {
+  data: Element;
   callback?: (item: any) => void;
 };
 
-export type Row = {
+export type Element = {
   text: string;
   price: number;
   sum: number;
   id: number;
 };
 
-export const TableRow = (props: TableRowProps) => {
+export const TableElement = (props: TableElementProps) => {
   const [isDisabled, setIsDisabled] = useState<boolean>((props.data.sum === 1));
   const [sum, setSum] = useState<number>(props.data.sum);
 
-  const plusItem = (props: any) => {
-    props.data.sum = sum + 1;
-    setSum(props.data.sum);
-    setIsDisabled(props.data.sum === 1);
-    props.callback?.(props);
+  const plusItem = (props: TableElementProps) => {
+    setSum(sum+1);
+    let item=props.data;
+    item.sum=sum+1;
+    props.callback?.(item);
+    if (((sum+1) === 1)!== isDisabled) {
+      setIsDisabled((sum+1) === 1);
+    } 
   };
-  const minusItem = (props: any) => {
-    props.data.sum = sum - 1;
-    setSum(props.data.sum);
-    setIsDisabled(props.data.sum === 1);
-    props.callback?.(props);
+  const minusItem = (props: TableElementProps) => {
+    setSum(sum - 1);
+    let item=props.data;
+    item.sum=sum-1;
+    props.callback?.(item);
+    if (((sum-1) === 1)!== isDisabled) {
+      setIsDisabled((sum-1) === 1);
+    } 
   };
   return (
     <>
