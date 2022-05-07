@@ -1,11 +1,11 @@
 import { Dispatch, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./App.scss";
 import { Header } from "./components/Header/Header";
 import { Table } from "./components/Table/Table";
-import { setItem } from "./store/item.actions";
 import { Item } from "./store/item.response";
 import { setListItem } from "./store/list.actions";
+import { ListState } from "./store/list.reducer";
 
 const productList = [
   {
@@ -43,22 +43,26 @@ const productList = [
 export const getListItem = (dispatch: Dispatch<any>) => {
   productList as Item[];
   dispatch(setListItem(productList));
-  productList.forEach(function (item) {
-    dispatch(setItem(item));
-  });
 };
 
 function App() {
+
   const dispatch = useDispatch();
+
+  const {itemList} = useSelector(
+    (state: ListState) => state 
+  );
+
   useEffect(() => {
     getListItem(dispatch);
-  }, []);
+  }, [itemList]);
+
   return (
     <>
       <body>
         <div className="common-conteiner">
           <Header />
-          <Table name="Детали заказа одного безумца" data={productList} />
+          <Table name="Детали заказа одного безумца" data={itemList!} />
         </div>
       </body>
     </>

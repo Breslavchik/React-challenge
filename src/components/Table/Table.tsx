@@ -6,9 +6,9 @@ import { Row, TableRow } from "./TableRow";
 import './Table.scss';
 import { findAmount } from "../../helpers.ts/math";
 import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "../../store/store";
 import { ListState } from "../../store/list.reducer";
 import { changeFinalCost, changeListItem } from "../../store/list.actions";
+import { AppState } from "../../store/store";
 
 export type TableProps = {
   name: string;
@@ -19,8 +19,9 @@ export const Table = (props: TableProps) => {
   const dispatch = useDispatch();
 
   const { itemList, finalCost } = useSelector(
-    (state: AppState) => state.ListState as ListState
+    (state:AppState ) => state.ListState as ListState
   );
+
   const [hidden, setHidden] = useState<boolean>(true);
   const [idForDelete, setIdForDelete] = useState<number>(0);
 
@@ -28,8 +29,6 @@ export const Table = (props: TableProps) => {
     setHidden(false);
     setIdForDelete(id);
   };
-
-  // const [amount, setAmount] = useState<number>(findAmount(props.data));
 
   const deleteItem = (elem: number) => {
     const newTableData = itemList?.filter((item) => item.id !== elem);
