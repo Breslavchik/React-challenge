@@ -1,8 +1,9 @@
 import { Reducer } from "redux";
-import { findAmount } from "../helpers.ts/math";
+import { calcTotalAmount } from "../helpers/Math"
 import { Item } from "./item.response";
 import {
   CHANGE_FINAL_COST,
+  CHANGE_ITEM_SUM,
   CHANGE_LIST_ITEM,
   ListAction,
   SET_LIST_ITEM,
@@ -24,7 +25,7 @@ export const ListReducer: Reducer<ListState | undefined, ListAction> = (
 ) => {
   switch (action.type) {
     case SET_LIST_ITEM: {
-      const cost = findAmount(action.payload);
+      const cost = calcTotalAmount(action.payload);
       return {
         ...state,
         itemList: action.payload,
@@ -32,10 +33,21 @@ export const ListReducer: Reducer<ListState | undefined, ListAction> = (
       };
     }
     case CHANGE_LIST_ITEM: {
-      const cost = findAmount(action.payload);
+      const cost = calcTotalAmount(action.payload);
       return {
         ...state,
         itemList: action.payload,
+        finalCost: cost,
+      };
+    }
+    case CHANGE_ITEM_SUM: {
+      const newItemList=state.itemList
+      const index=newItemList?.findIndex(item=>item.id===action.payload.id);
+      newItemList?.splice(index!, 1, action.payload);
+      const cost = calcTotalAmount(newItemList!);
+      return {
+        ...state,
+        itemList: newItemList,
         finalCost: cost,
       };
     }

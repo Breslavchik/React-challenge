@@ -22,12 +22,11 @@ export const Table = (props: TableProps) => {
   );
   const [isModalWindowHidden, setIsModalWindowHidden] = useState<boolean>(true);
   const [idForDelete, setIdForDelete] = useState<number>(0);
-  const [amount, setAmount] = useState<number>(0);
- 
+  
   useEffect(()=>{
-    setAmount(calcTotalAmount(tableData));
-  }, [tableData, amount]);
-
+    dispatch(changeFinalCost(calcTotalAmount(itemList!)));
+  }, [itemList, finalCost]);
+ 
   const openModal = (id: number) => {
     setIsModalWindowHidden(false);
     setIdForDelete(id);
@@ -38,18 +37,6 @@ export const Table = (props: TableProps) => {
     dispatch(changeListItem(newTableData!));
     setIsModalWindowHidden(true);
   };
-
-  const findTotalAmountAfterItemChange =(elem:Element)=>{
-  const newTableData=tableData
-  const index=tableData.findIndex(item=>item.id===elem.id);
-  newTableData.splice(index, 1, elem);
-  setTableData(newTableData);
-  setAmount(calcTotalAmount(newTableData));
-  }
-
-  useEffect(()=>{
-    dispatch(changeFinalCost(findAmount(itemList!)));
-  }, [itemList, finalCost]);
 
   return (
     <>
@@ -66,12 +53,11 @@ export const Table = (props: TableProps) => {
           </tr>
         </thead>
         <tbody>
-          {itemList?.map((elem) => (
-          {tableData.map((elem, index) => (
+          {itemList?.map((elem, index) => (
             <tr key={elem.id}>
               <td>{index + 1}</td>
-              <TableElement data={elem} callback={()=>{ findTotalAmountAfterItemChange(elem)}} />
-              <TableRow data={elem} callback={()=>{ dispatch(changeFinalCost(findAmount(itemList)))}} />
+              <TableElement data={elem} />
+              {/* <TableElement data={elem} callback={()=>{ dispatch(changeFinalCost(calcTotalAmount(itemList)))}} /> */}
               <td><Button
                   icon={Icon.Delete}
                   onClick={() => {

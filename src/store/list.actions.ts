@@ -14,6 +14,13 @@ export const changeListItem = (list: Item[]) => ({
     payload: list,
   });
 
+export const CHANGE_ITEM_SUM = 'listItem/CHANGE_ITEM_SUM' as const;
+
+export const changeItemSum = (item: Item) => ({
+  type: CHANGE_ITEM_SUM ,
+  payload: item,
+});
+
   export const CHANGE_FINAL_COST = 'listItem/CHANGE_FINAL_COST' as const;
 
 export const changeFinalCost = (cost: number) => ({
@@ -24,4 +31,5 @@ export const changeFinalCost = (cost: number) => ({
 export type ListAction =
   | ReturnType<typeof setListItem>
   | ReturnType<typeof changeListItem>
-  | ReturnType<typeof changeFinalCost>;
+  | ReturnType<typeof changeFinalCost>
+  | ReturnType<typeof changeItemSum>;
