@@ -23,7 +23,7 @@ const productList = [
   {
     text: "Бубен",
     price: 1500,
-    sum: 12,
+    sum: 10,
     id: 3,
   },
   {
@@ -34,8 +34,8 @@ const productList = [
   },
   {
     text: "Шляпа",
-    price: 300,
-    sum: 5,
+    price: 3000,
+    sum: 2,
     id: 5,
   },
 ];
@@ -59,11 +59,11 @@ function App() {
 
   return (
     <>
-      <body>
-        <div className="common-conteiner">
-          <Header />
-          <Table name="Детали заказа одного безумца" data={itemList!} />
-        </div>
+    <body>
+    <div className="common-container">
+      <Header />
+      <Table name="Детали заказа одного безумца" data={productList} />
+      </div>
       </body>
     </>
   );
