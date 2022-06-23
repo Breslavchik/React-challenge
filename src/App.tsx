@@ -1,6 +1,11 @@
+import { Dispatch, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./App.scss";
 import { Header } from "./components/Header/Header";
 import { Table } from "./components/Table/Table";
+import { Item } from "./store/item.response";
+import { setListItem } from "./store/list.actions";
+import { ListState } from "./store/list.reducer";
 
 const productList = [
   {
@@ -35,7 +40,23 @@ const productList = [
   },
 ];
 
+export const getListItem = (dispatch: Dispatch<any>) => {
+  productList as Item[];
+  dispatch(setListItem(productList));
+};
+
 function App() {
+
+  const dispatch = useDispatch();
+
+  const {itemList} = useSelector(
+    (state: ListState) => state 
+  );
+
+  useEffect(() => {
+    getListItem(dispatch);
+  }, [itemList]);
+
   return (
     <>
     <body>

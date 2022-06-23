@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Item } from "../../store/item.response";
+import { changeItemSum } from "../../store/list.actions";
 import { Button } from "../Button/Button";
 import { Icon } from "../Button/SvgIcon/Icon";
 
@@ -15,6 +18,7 @@ export type Element = {
 };
 
 export const TableElement = (props: TableElementProps) => {
+  const dispatch=useDispatch();
   const [isDisabled, setIsDisabled] = useState<boolean>((props.data.sum === 1));
   const [sum, setSum] = useState<number>(props.data.sum);
 
@@ -22,7 +26,7 @@ export const TableElement = (props: TableElementProps) => {
     setSum(sum+1);
     let item=props.data;
     item.sum=sum+1;
-    props.callback?.(item);
+    dispatch(changeItemSum(item as Item))
     if (((sum+1) === 1)!== isDisabled) {
       setIsDisabled((sum+1) === 1);
     } 
@@ -31,11 +35,12 @@ export const TableElement = (props: TableElementProps) => {
     setSum(sum - 1);
     let item=props.data;
     item.sum=sum-1;
-    props.callback?.(item);
+    dispatch(changeItemSum(item as Item))
     if (((sum-1) === 1)!== isDisabled) {
       setIsDisabled((sum-1) === 1);
     } 
   };
+  
   return (
     <>
       <td>{props.data.text}</td>

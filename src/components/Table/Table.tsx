@@ -5,6 +5,10 @@ import { ModalWindow } from "../ModalWindow/ModalWindow";
 import { Element, TableElement } from "./TableElement";
 import './Table.scss';
 import { calcTotalAmount } from "../../helpers/Math";
+import { useDispatch, useSelector } from "react-redux";
+import { ListState } from "../../store/list.reducer";
+import { changeFinalCost, changeListItem } from "../../store/list.actions";
+import { AppState } from "../../store/store";
 
 export type TableProps = {
   name: string;
@@ -12,34 +16,27 @@ export type TableProps = {
 };
 
 export const Table = (props: TableProps) => {
-
-  const [tableData, setTableData] = useState<Element[]>(props.data);
+  const dispatch = useDispatch();
+  const { itemList, finalCost } = useSelector(
+    (state:AppState ) => state.ListState as ListState
+  );
   const [isModalWindowHidden, setIsModalWindowHidden] = useState<boolean>(true);
   const [idForDelete, setIdForDelete] = useState<number>(0);
-  const [amount, setAmount] = useState<number>(0);
- 
+  
   useEffect(()=>{
-    setAmount(calcTotalAmount(tableData));
-  }, [tableData, amount]);
-
+    dispatch(changeFinalCost(calcTotalAmount(itemList!)));
+  }, [itemList, finalCost]);
+ 
   const openModal = (id: number) => {
     setIsModalWindowHidden(false);
     setIdForDelete(id);
   };
 
   const deleteItem = (elem: number) => {
-    const newTableData = tableData.filter((item) => item.id !== elem);
-    setTableData(newTableData);
+    const newTableData = itemList?.filter((item) => item.id !== elem);
+    dispatch(changeListItem(newTableData!));
     setIsModalWindowHidden(true);
   };
-
-  const findTotalAmountAfterItemChange =(elem:Element)=>{
-  const newTableData=tableData
-  const index=tableData.findIndex(item=>item.id===elem.id);
-  newTableData.splice(index, 1, elem);
-  setTableData(newTableData);
-  setAmount(calcTotalAmount(newTableData));
-  }
 
   return (
     <>
@@ -56,10 +53,11 @@ export const Table = (props: TableProps) => {
           </tr>
         </thead>
         <tbody>
-          {tableData.map((elem, index) => (
+          {itemList?.map((elem, index) => (
             <tr key={elem.id}>
               <td>{index + 1}</td>
-              <TableElement data={elem} callback={()=>{ findTotalAmountAfterItemChange(elem)}} />
+              <TableElement data={elem} />
+              {/* <TableElement data={elem} callback={()=>{ dispatch(changeFinalCost(calcTotalAmount(itemList)))}} /> */}
               <td><Button
                   icon={Icon.Delete}
                   onClick={() => {
@@ -78,7 +76,7 @@ export const Table = (props: TableProps) => {
         }}
         onClose={() => setIsModalWindowHidden(true)}
       />
-      <h1 className="table-footer"> ИТОГО: {amount} р. </h1>
+      <h1 className="table-footer"> ИТОГО: {finalCost} р. </h1>
     </>
   );
 };
